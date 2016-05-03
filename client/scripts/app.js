@@ -40,7 +40,7 @@ app.fetch = function() {
     type: 'GET',
     // dataType: 'jsonp',
     success: function(data) {
-      console.log(data);
+      app.writeMessages(data);
     },
     error: function (data) {
       // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
@@ -49,3 +49,29 @@ app.fetch = function() {
 
   });
 };
+
+
+
+app.writeMessages = function(array) {
+
+  for (var i = 0; i < array.results.length; i++) {
+    $('.chat-container').append('<div class="message" id=' + array.results[i].objectId + '></div>');
+    $('#' + array.results[i].objectId).text(array.results[i].text);
+    console.log(array.results[i]);
+  }
+};
+
+
+
+$(document).ready(function() {
+  //click handler to fetch
+  $('#get-messages').on('click', app.fetch);
+
+
+
+
+   
+
+
+
+}); 
