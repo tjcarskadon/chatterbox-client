@@ -40,7 +40,7 @@ app.fetch = function() {
     type: 'GET',
     // dataType: 'jsonp',
     success: function(data) {
-      app.writeMessages(data);
+      app.addMessage(data);
     },
     error: function (data) {
       // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
@@ -52,14 +52,35 @@ app.fetch = function() {
 
 
 
-app.writeMessages = function(array) {
+app.addMessage = function(data) {
 
-  for (var i = 0; i < array.results.length; i++) {
-    $('.chat-container').append('<div class="message" id=' + array.results[i].objectId + '></div>');
-    $('#' + array.results[i].objectId).text(array.results[i].text);
-  }
+    for (var i = 0; i < data.results.length; i++) {
+      $('.chat-container').append('<div class="chat" id=' + data.results[i].objectId + '></div>');
+      $('#' + data.results[i].objectId).text(data.results[i].text);
+      //call addRoom(roomname)
+      app.addRoom(data.results[i].roomname);
+    }
+
+
 };
 
+app.clearMessages = function() {
+  $('#chats').children().remove();
+};
+
+app.addRoom = function(roomname) {
+  var roomnames = $('#dropdown>option').map(function() {
+    return $(this).val();
+  });
+  roomnames = Array.prototype.slice.apply(roomnames);
+  console.log(roomname);
+  if (roomnames.indexOf(roomname) === -1) {
+    $('#dropdown').append('<option value=' + roomname + '>' + roomname + '</option>');
+  }
+
+  //check if the new room name is in the room
+  //if not then add it. 
+};
 
 
 $(document).ready(function() {
@@ -69,10 +90,11 @@ $(document).ready(function() {
   $('#send-messages').on('click', function() { 
     //get the value 'hihi' from the input field
     message.text = _.escape($('#input-message').val());
-    $('#input-message').val('')
+    $('#input-message').val('');
     app.send(message); 
   });
-
+  //clear messages
+  $('#clear-messages').on('click', app.clearMessages);
 
 
 

@@ -19,11 +19,22 @@
     <div id="main">
       <h1>chatterbox</h1>
       <!-- Your HTML goes here! -->
-      <input type='text' id="input-message"></input>
-      <button type="button" id="send-messages">Submit</button>
-      <button type="button" id="get-messages">Get Messages</button>    
+      <div class="add-room"> 
+        <select name="select" id="dropdown">
+        <option value="room1">Room1</option>
+        <option value="room2">Room2</option>
+        <option value="room3">Room3</option>
+
+        </select> 
+      </div>
+      <!-- /add-room -->
+        <input type='textarea' id="input-message"></input>
+        <button type="button" id="send-messages">Submit</button>
+        <button type="button" id="get-messages">Get Messages</button>    
+        <button type="button" id="clear-messages">Clear Messages</button>
     </div>
-    <div class="chat-container">
+    <!-- /main -->
+    <div class="chat-container" id="chats">
       
     </div>
     <!-- /chat-container -->
