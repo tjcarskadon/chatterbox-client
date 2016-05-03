@@ -25,7 +25,7 @@ app.send = function(message) {
 
   $.ajax({
     // This is the url you should use to communicate with the parse API server.
-    url: 'https://api.parse.com/1/classes/messages',
+    url: app.server,
     type: 'POST',
     data: JSON.stringify(message),
     contentType: 'application/json',
@@ -41,12 +41,13 @@ app.send = function(message) {
 
 app.fetch = function() {
   $.ajax({
-    url: 'https://api.parse.com/1/classes/messages',
+    url: app.server,
     type: 'GET',
     // dataType: 'jsonp',
     success: function(data) {
       app.clearMessages();
       app.addMessage(data);
+
     },
     error: function (data) {
       // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
@@ -62,25 +63,33 @@ app.addMessage = function(data) {
   var selectedRoom = $('#roomSelect option:selected').text();
 
   for (var i = 0; i < data.results.length; i++) {
-
-
     if (data.results[i].text && data.results[i].text !== ' ' && selectedRoom === 'Select A Chat Room' ) {
-      $('.chat-container').append('<div class="chat" id=' + data.results[i].objectId + '></div>');
-      $('#' + data.results[i].objectId).html('<div><span class="username">'+_.escape(data.results[i].username)+'</span><p><span class="chatMessage">'+_.escape(data.results[i].text)+'</span></p></div>');
-      console.log(data.results[i].username);
-     
-      // $('.username' + data.results[i].objectId).val(_.escape(data.results[i].username));
-      // $('.chatMessage ' + data.results[i].objectId).text(data.results[i].text);
+      $('.chat-container').append('<div class="chat " id=' + data.results[i].objectId + '></div>');
+      $('#' + data.results[i].objectId).html('<a href="#" class="username ' + _.escape(data.results[i].username) + '">' + _.escape(data.results[i].username) + '</a><p><span class="chatMessage ' + _.escape(data.results[i].username) + '">' + _.escape(data.results[i].text) + '</span></p>');
     } else if (selectedRoom === data.results[i].roomname) {
       $('.chat-container').append('<div class="chat" id=' + data.results[i].objectId + '></div>');
-      $('#' + data.results[i].objectId).text(data.results[i].text);
+      $('#' + data.results[i].objectId).html('<div><a href="#" class="username ' + _.escape(data.results[i].username) + '">' + _.escape(data.results[i].username) + '</a><p><span class="chatMessage">' + _.escape(data.results[i].text) + '</span></p></div>');
+
     }
+
     if ( !app.rooms.hasOwnProperty(data.results[i].roomname )) {
       app.rooms[data.results[i].roomname] = data.results[i].roomname;
       app.addRoom(data.results[i].roomname);
     }
   }
+  $('.username').click(function() {
+
+    //find the username
+    var eachUser = $(this).attr('class');
+    eachUser = eachUser.split(' ').pop();
+    console.log(eachUser);
+  
+    $('span[class*="' + eachUser + '"]').toggleClass('friend');
+
+  });
+
 };
+
 
 app.clearMessages = function() {
   $('#chats').children().remove();
@@ -112,8 +121,9 @@ $(document).ready(function() {
     app.send(message); 
   });
 
-
-
+ 
+//on click - select class "username"
+  //add friend class .friend
    
 
 
