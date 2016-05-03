@@ -1,8 +1,9 @@
 var message = {
   username: window.location.search.slice(10),
   text: '',
-  roomname: 'in your head'
+  roomname: ''
 };
+
 
 //psuedoclassical method for making the app
 var AppMaker = function() {};
@@ -10,9 +11,11 @@ var AppMaker = function() {};
 
 var app = new AppMaker();
 
+app.rooms = {};
 //init method
 app.init = function() {
   app.server = 'https://api.parse.com/1/classes/messages';
+  setInterval(app.fetch, 1000);
 };
 
 //send method
@@ -40,6 +43,7 @@ app.fetch = function() {
     type: 'GET',
     // dataType: 'jsonp',
     success: function(data) {
+      app.clearMessages();
       app.addMessage(data);
     },
     error: function (data) {
@@ -53,37 +57,37 @@ app.fetch = function() {
 
 
 app.addMessage = function(data) {
+  var selectedRoom = $('#roomSelect option:selected').text();
 
-    for (var i = 0; i < data.results.length; i++) {
+  for (var i = 0; i < data.results.length; i++) {
+
+
+    if (data.results[i].text && data.results[i].text !== ' ' && selectedRoom === 'Select A Chat Room' ) {
       $('.chat-container').append('<div class="chat" id=' + data.results[i].objectId + '></div>');
       $('#' + data.results[i].objectId).text(data.results[i].text);
-      //call addRoom(roomname)
+    } else if (selectedRoom === data.results[i].roomname) {
+      $('.chat-container').append('<div class="chat" id=' + data.results[i].objectId + '></div>');
+      $('#' + data.results[i].objectId).text(data.results[i].text);
+    }
+    if ( !app.rooms.hasOwnProperty(data.results[i].roomname )) {
+      app.rooms[data.results[i].roomname] = data.results[i].roomname;
       app.addRoom(data.results[i].roomname);
     }
-
-
+  }
 };
 
 app.clearMessages = function() {
   $('#chats').children().remove();
 };
 
-app.addRoom = function(roomname) {
-  var roomnames = $('#dropdown>option').map(function() {
-    return $(this).val();
-  });
-  roomnames = Array.prototype.slice.apply(roomnames);
-  console.log(roomname);
-  if (roomnames.indexOf(roomname) === -1) {
-    $('#dropdown').append('<option value=' + roomname + '>' + roomname + '</option>');
-  }
-
-  //check if the new room name is in the room
-  //if not then add it. 
+app.addRoom = function(uniqueRoom) {
+  
+  $('#roomSelect').append('<option value=' + uniqueRoom + '>' + uniqueRoom + '</option>');
 };
 
 
 $(document).ready(function() {
+    app.init();
   //click handler to fetch
   $('#get-messages').on('click', app.fetch);
   //click handler to send
@@ -91,6 +95,7 @@ $(document).ready(function() {
     //get the value 'hihi' from the input field
     message.text = _.escape($('#input-message').val());
     $('#input-message').val('');
+    message.roomname = $('#roomSelect option:selected').text();
     app.send(message); 
   });
   //clear messages
