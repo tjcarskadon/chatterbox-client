@@ -14,8 +14,10 @@ var app = new AppMaker();
 app.rooms = {};
 //init method
 app.init = function() {
+
   app.server = 'https://api.parse.com/1/classes/messages';
-  setInterval(app.fetch, 1000);
+  app.fetch();
+  setInterval(app.fetch, 20000);
 };
 
 //send method
@@ -64,7 +66,11 @@ app.addMessage = function(data) {
 
     if (data.results[i].text && data.results[i].text !== ' ' && selectedRoom === 'Select A Chat Room' ) {
       $('.chat-container').append('<div class="chat" id=' + data.results[i].objectId + '></div>');
-      $('#' + data.results[i].objectId).text(data.results[i].text);
+      $('#' + data.results[i].objectId).html('<div><span class="username">'+_.escape(data.results[i].username)+'</span><p><span class="chatMessage">'+_.escape(data.results[i].text)+'</span></p></div>');
+      console.log(data.results[i].username);
+     
+      // $('.username' + data.results[i].objectId).val(_.escape(data.results[i].username));
+      // $('.chatMessage ' + data.results[i].objectId).text(data.results[i].text);
     } else if (selectedRoom === data.results[i].roomname) {
       $('.chat-container').append('<div class="chat" id=' + data.results[i].objectId + '></div>');
       $('#' + data.results[i].objectId).text(data.results[i].text);
@@ -87,10 +93,9 @@ app.addRoom = function(uniqueRoom) {
 
 
 $(document).ready(function() {
-    app.init();
-  //click handler to fetch
-  $('#get-messages').on('click', app.fetch);
+  app.init();
   //click handler to send
+  
   $('#send-messages').on('click', function() { 
     //get the value 'hihi' from the input field
     message.text = _.escape($('#input-message').val());
@@ -98,8 +103,14 @@ $(document).ready(function() {
     message.roomname = $('#roomSelect option:selected').text();
     app.send(message); 
   });
-  //clear messages
-  $('#clear-messages').on('click', app.clearMessages);
+  
+  //add a new room
+  $('#makeRoom').on('click', function() { 
+    //get the value 'hihi' from the input field
+    message.roomname = _.escape($('#input-message').val());
+    $('#input-message').val('');
+    app.send(message); 
+  });
 
 
 
