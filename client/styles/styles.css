@@ -1,5 +1,13 @@
+* {
+    /*border: 1px solid red;*/
+}
+html {
+    background: url(file:///Volumes/student/tj-lynn/chatter/client/images/bkgrnd.jpg) no-repeat center center fixed;
+    background-size: cover;
+    
+}
+
 body {
-    background: #eee;
     text-align: center;
     padding: 0 25px;
     font-family: arial, sans-serif;
@@ -9,17 +17,32 @@ body {
     width: 500px;
     margin: auto;
     text-align: left;
-    background: white;
     padding: 50px 60px;
-    border: solid #ddd;
+    /*border: solid #ddd;*/
     border-width: 0 1px 1px 1px;
+}
+
+#main {
+    /*background: BELIZE HOLE;*/
+    width: 380px;
+    /*height: 380px;*/
+    /*margin-top: 70px;*/
+    /*border-radius: 10px*/
+    /*opacity: .3;*/
+    padding: 25px; 
+    position: relative;
+    left: -30px;
+
 }
 
 #main h1 {
     margin-top: 0;
-    font-size: 35px;
+    font-size: 100px;
+    color: white;
+    font-family: 'Lobster', cursive;
     margin-bottom: 5px;
     padding: 5px;
+    padding-right: 100px;
 }
 
 #main h1 span {
@@ -46,6 +69,15 @@ body {
     line-height: 13px;
 }
 
+input {
+    border: 5px solid white; 
+    padding: 15px;
+    background: rgba(255,255,255,0.5);
+    margin: 0 0 10px 0;
+    width: 400px;
+    font-size: 14px;
+}
+
 form {
     padding: 20px;
     padding-left: 0;
@@ -59,10 +91,15 @@ form input[type=text] {
     padding: 5px;
 }
 
+
 .chat {
     padding: 5px;
     margin-bottom: 5px;
-    background-color: #eee;
+    background-color: #b6ccc6;
+    opacity: 1;
+    z-index: -1;
+    border-radius: 10px;
+
 }
 
 .chat .username {
@@ -88,3 +125,33 @@ form input[type=text] {
     background-color: #0090da;
 }
 
+select {
+    z-index: 1000;
+    background-color: #f3f4f5;
+    min-width: 220px;
+    border: none;
+    margin-top: 9px;
+    padding: 0;
+    font-size: 14px;
+    border-radius: 4px;
+    box-shadow: none;
+}
+
+.title {
+    width: 480px;
+    position: relative;
+    left: -20px;
+}
+
+.chat-container {
+    padding-right: 500px;
+}
+
+.add-room {
+    text-align: center;
+    padding-bottom: 5px;
+}
+
+.buttons {
+    text-align: center;
+}

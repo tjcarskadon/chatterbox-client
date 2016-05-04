@@ -17,7 +17,7 @@ app.init = function() {
 
   app.server = 'https://api.parse.com/1/classes/messages';
   app.fetch();
-  setInterval(app.fetch, 20000);
+  setInterval(app.fetch, 2000);
 };
 
 //send method

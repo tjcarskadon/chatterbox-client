@@ -17,17 +17,26 @@
   </head>
   <body>
     <div id="main">
-      <h1>chatterbox</h1>
+      <div class="title">
+        <h1>Chatterbox</h1>
+      </div>
+      <!-- /title -->
       <!-- Your HTML goes here! -->
-      <div class="add-room"> 
-        <select name="select" id="roomSelect">
-        <option value="chooseYourRoom">Select A Chat Room</option>
-        </select> 
+      <div class="input-container">
+        <div>
+          <input type='textarea' id="input-message"></input>
+        </div>
+        <div class="add-room"> 
+          <select name="select" id="roomSelect">
+          <option value="chooseYourRoom">Select A Chat Room</option>
+          </select> 
+        </div>  
       </div>
       <!-- /add-room -->
-        <input type='textarea' id="input-message"></input>
+      <div class="buttons">
         <button type="button" id="send-messages">Submit</button>
         <button type="button" id="makeRoom" >Create a new room</button>
+      </div>
     </div>
     <!-- /main -->
     <div class="chat-container" id="chats">
